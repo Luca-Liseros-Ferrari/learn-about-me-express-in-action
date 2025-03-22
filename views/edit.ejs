@@ -1,0 +1,17 @@
+<%- include('_header') %>
+
+<h1>Edit your profile</h1>
+
+<form action="/edit" method="post">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+  <input name="displayname" type="text" class="form-control" placeholder="Display name" value="<%= currentUser.displayName || "" %>">
+  <textarea name="bio" class="form-control" placeholder="Tell us about yourself!"><%= currentUser.bio || "" %></textarea>
+  <input type="submit" value="Update" class="btn btn-primary btn-block">
+</form>
+
+<form action="/delete-account" method="POST" onsubmit="return confirm('Are you sure you want to delete your account? This action is irreversible!');">
+  <button type="submit" class="btn btn-danger">Delete Account</button>
+</form>
+
+
+<%- include ('_footer') %>

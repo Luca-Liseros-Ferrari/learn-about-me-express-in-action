@@ -1,0 +1,43 @@
+{
+  "name": "learn-about-me",
+  "type": "module",
+  "private": true,
+  "scripts": {
+  "start": "concurrently \"pm2 start app.mjs --name learn-about-me\" \"npm run watch\"",
+  "stop": "pm2 stop learn-about-me",
+  "restart": "pm2 restart learn-about-me",
+  "delete": "pm2 delete learn-about-me",
+  "build:less": "lessc views/less/style.less views/css/style.css",
+  "build:css": "cleancss -o views/css/style.min.css views/css/style.css",
+  "build:js": "terser views/js/main.js -o views/js/main.min.js --compress --mangle",
+  "build": "npm run build:less && npm run build:css && npm run build:js",
+  "watch:less": "concurrently \"npx less-watch-compiler views/less views/css\" \"npx chokidar views/css/style.css -c \\\"npx cleancss -o views/css/style.min.css views/css/style.css\\\"\"",
+  "watch:js": "npx chokidar views/js/main.js -c \\\"npx terser views/js/main.js -o views/js/main.min.js --compress --mangle\\\"",
+  "watch": "concurrently \"npm run watch:less\" \"npm run watch:js\""
+},
+
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.6.5",
+    "connect-flash": "^0.1.1",
+    "cookie": "^1.0.2",
+    "cookie-parser": "^1.3.2",
+    "csurf": "^1.11.0",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-session": "^1.7.6",
+    "express-validator": "^7.2.1",
+    "helmet": "^8.1.0",
+    "mongoose": "^8.10.1",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "chokidar-cli": "^3.0.0",
+    "clean-css-cli": "^5.6.3",
+    "concurrently": "^9.1.2",
+    "less": "^4.2.2",
+    "terser": "^5.39.0"
+  }
+}

@@ -1,0 +1,77 @@
+<%- include('_header') %>
+
+<h1>Welcome to Learn About Me!</h1>
+
+<% users.forEach(function(user) { %>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <a href="/users/<%= user.username %>"> <%= user.name() %> </a>
+  </div>
+  <% if (user.bio) { %>
+  <div class="panel-body"><%= user.bio %></div>
+  <% } %>
+  <div class="panel-body" > <a href="/edit/"> edit </a> </div>
+</div>
+
+<% }) %> <%- include ('_footer') %>
+
+<!-- 
+Come funziona il passaggio di dati a EJS?
+con:
+res.render("index", { users: users });
+Stai dicendo a Express di renderizzare il template index.ejs, passando un oggetto { users: users }.
+Questo significa che nel file index.ejs, la variabile users sarà disponibile per essere utilizzata.
+🔹 Collegamento tra il controller e la view
+📌 routes.js (controller)
+
+Qui stai recuperando tutti gli utenti dal database e ordinandoli per data di creazione in ordine decrescente:
+router.get("/", function(req, res, next) {
+  User.find()
+    .sort({ createdAt: "descending" })
+    .exec()
+    .then(users => {
+      res.render("index", { users: users }); // Passi 'users' alla view
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+users è un array di documenti User recuperati dal database MongoDB.
+📌 index.ejs (view)
+<% users.forEach(function(user) { %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <a href="/users/<%= user.username %>">
+        <%= user.name() %>
+      </a>
+    </div>
+    <% if (user.bio) { %>
+      <div class="panel-body"><%= user.bio %></div>
+    <% } %>
+  </div>
+<% }) %>
+users è lo stesso array ricevuto dal controller.
+users.forEach(function(user) { ... }) itera su ogni utente per visualizzarlo.
+user.username viene usato per creare un link al profilo dell'utente.
+user.name() (se esiste come metodo nello schema Mongoose) viene stampato come nome dell'utente.
+user.bio viene mostrata solo se esiste.
+
+🔹 Come verificare che users sia passato correttamente?
+Se vuoi testarlo, puoi aggiungere un console.log(users) nel controller prima di renderizzare la view:
+
+.then(users => {
+  console.log(users); // Controlla se l'array di utenti è correttamente popolato
+  res.render("index", { users: users });
+})
+
+E nel file EJS puoi fare un test veloce:
+<%= JSON.stringify(users, null, 2) %>
+per stampare l'array completo nel browser.
+
+🔹 Conclusione
+✅ Sì, la variabile users che arriva alla view EJS è la stessa ottenuta dal database in routes.js.
+✅ Express la passa a res.render(), e EJS la usa per generare il markup dinamico.
+✅ Se non viene mostrato nulla in pagina, controlla che ci siano effettivamente utenti nel database! 🚀
+
+-->

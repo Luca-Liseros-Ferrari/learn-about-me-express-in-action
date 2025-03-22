@@ -1,0 +1,13 @@
+<%- include('_header') %>
+
+<h1>Sign up</h1>
+
+<form action="/signup" method="post">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+  <input name="username" type="text" class="form-control" placeholder="Username" required autofocus>
+  <input name="password" type="password" class="form-control" placeholder="Password" required>
+  <textarea name="bio" class="form-control" placeholder="Describe yourself here..." rows="4" cols="50"></textarea>
+  <input type="submit" value="Sign up" class="btn btn-primary btn-block">
+</form>
+
+<%- include ('_footer') %>
